@@ -1,8 +1,6 @@
 package TweetPredictionPackage;
 
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
 
 /* Code Citation #1
  * Code Used: readFile() method, writeFile() methods, and doWrite() method
@@ -19,7 +17,7 @@ import javax.swing.*;
  */
 
 /* Author: Shandon Probst
- * Class: CSCI 3381 8:00 AM T/TR
+ * Class: CSCI 3381 8:00 AM M/W/F
  * Purpose: This program is meant to create an archive of tweets given a text file and predict their polarity
  * in methods that reflect correct sentiment analysis
  */
@@ -84,7 +82,16 @@ public class MainTester {
 		
 		//************************* START OF GUI IMPLEMENTATION/TESTING *************************
 		
-		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainPanel frame = new MainPanel();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		
 		//************************ END OF GUI IMPLEMENTATION/TESTING ****************************
 	}

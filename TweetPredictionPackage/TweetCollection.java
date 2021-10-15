@@ -1,6 +1,5 @@
 package TweetPredictionPackage;
 
-import java.util.Iterator;
 import java.util.TreeSet;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -105,14 +104,16 @@ public class TweetCollection
 		tweets.remove(this.getTweetById(tweetId));
 	}
 	
+	//gets all tweets from the collection
+	public TreeSet<Tweet> getAllTweets()
+	{
+		return tweets;
+	}
+	
 	//gets a tweet object(s) that contains the specified id
 	public Tweet getTweetById (String tweetId)
 	{	
-		Iterator<Tweet> iter = tweets.iterator();
-		
-		while(iter.hasNext())
-		{
-			Tweet tweet = iter.next();
+		for (Tweet tweet : tweets) {
 			if (tweet.getTweetId().equals(tweetId))
 				return tweet;
 		}
@@ -122,25 +123,23 @@ public class TweetCollection
 	//returns tweets based on a given polarity
 	public Tweet getTweetByPolarity (String polarity)
 	{	
-		Iterator<Tweet> iter = tweets.iterator();
-		
-		while(iter.hasNext())
-		{
-			Tweet tweet = iter.next();
+		for (Tweet tweet : tweets) {
 			if (tweet.getPolarity().equals(polarity))
 				return tweet;
 		}
 			return null;
 	}
 	
+	public String getFileName()
+	{
+		return fileName;
+	}
+	
 	//gets a tweet object(s) that contains the specified username
 	public Tweet getTweetByUserName (String tweetUserName)		//gets a tweet in the tweets treeset by its username
 	{		 
-		Iterator<Tweet> iter = tweets.iterator();
-		
-		while(iter.hasNext())
-		{
-			Tweet tweet = iter.next();
+	
+		for (Tweet tweet : tweets) {
 			if (tweet.getTweetUserName().equals(tweetUserName))
 				return tweet;
 		}
