@@ -1,0 +1,119 @@
+***************************** RADIO BUTTONS IN FILTER TWEETS FUNCTIONALITY **************************
+1. Program should start with N/A - All selected.
+	1.a - This should display ALL Tweets in the Tweets text panel and combo box.
+2. Switch to N/A - None to display NO Tweets.
+	2.a - This should display NO Tweets in the Tweets text panel and combo box.
+3. Switch to N/A - All to display ALL Tweets.
+	3.a - This should display ALL Tweets in the Tweets text panel and combo box.
+4. Cycle between "0 - Negative", "2 - Neutral", and "4 - Positive" button to make sure they properly list tweets by the respective polarity.
+	4.a - This should display the respective tweets and update the text panel and combo box as necessary.
+
+NOTE: The Tweet combo box will update after there are changes to the items in the text panel or Tweet collection object. 
+******************************************************************************************************
+
+*************** GET TWEETS, RESET FIELDS & REFRESH, AND TWEET COMBO BOX FUNCTIONALITY ***************
+5. Enter "test" into the "Username: " textfield.
+6. Press "Get Tweet(s)" button.
+	6.a - This should return an error dialog box stating "No such entries exist." to note an error.
+	6.b - This should also clear the combo box.
+7. Replace "test" with "_abi" into the "Username: " textfield.
+8. Press "Get Tweet(s)" button. This should display the Tweet with author "_abi" in the Tweets text panel.
+	8.a - This should return an information dialog box stating "The Tweets have been filtered." to note success.
+	8.b - This should display the Tweet with the author "_abi" in the Tweets text panel and successfully update the combo box.
+9. Enter "8052" into the "Tweet ID: " textfield
+10. Press "Get Tweet(s)" button.
+	10.a - This should return an information dialog box stating "The Tweets have been filtered." to note success.
+	10.b - This should display the Tweet with author "_abi" and ID "8052" in the Tweets text panel and successfully update the combo box.
+11. Replace "_abi" with "test" into the "Username: " textfield and keep "Tweet ID: " textfield as "8052".
+	11.a - This should return an error dialog box stating "No such entries exist." to note an error.
+12. Replace "test" with "_abi" into the "Username: " textfield and replace the "Tweet ID: " textfield as "-1"
+	12.a - This should return an error dialog box stating "No such entries exist." to note an error.
+13. Remove "-1" from the "Tweet ID" textfield and keep "Username: " textfield as "_abi"
+14. Press "Get Tweet(s)" button.
+	14.a - This should return an information dialog box stating "The Tweets have been filtered." to note success.
+	15.b - This should display the Tweet with the author "_abi" in the Tweets text panel and successfully update the combo box.
+15. Press "Remove Tweet" button.
+	15.a - This should return an information dialog box stating "Tweet has been remove." to note success.
+	15.b - This should remove the Tweet from the combobox.
+16. Press "Reset Fields & Refresh" button.
+	16.a - This should return an information dialog box stating "Entry fields have been reset and the Tweets list has been refreshed." to note success.
+	17.b - The Tweets text panel and combobox should be repopulated with a new Tweet Collection with the removed Tweet.
+17. Enter "_abi" into the "Username: " textfield.
+18. Press "Get Tweet(s)" button.
+	6.a - This should return an error dialog box stating "No such entries exist." to note an error.
+	6.b - This should also clear the combo box.
+******************************************************************************************************
+
+*************************************** ADD TWEET FUNCTIONALITY **************************************
+19. Press "Add Tweet" button.
+	19.a - This should return a dialog box with a text field stating "Please enter a Tweet to add: (Example: 0,123,testuser,testcontent)
+20. Press "Cancel" button.
+	20.a - This should return an error dialog box stating "Add Tweet was cancelled." to note an error.
+21. Press "Ok" button.
+	21.a - This should redirect you to the main interface.
+22. Press "Add Tweet" button.
+	19.a - This should return a dialog box with a text field stating "Please enter a Tweet to add: (Example: 0,123,testuser,testcontent)
+23. Press "Ok" button.
+	23.a - This should return an error dialog box stating "No entry was entered." to note an error.
+24. Press "Ok" button.
+25. Press "Add Tweet" button.
+	25.a - This should return a dialog box with a text field stating "Please enter a Tweet to add: (Example: 0,123,testuser,testcontent)
+26. Type "0,123,testuser,testcontent" into the textfield.
+27. Press "Ok" button.
+	27.a - This should return an error dialog box stating "Tweet already exists with same Tweet ID." to note an error.
+28. Press "Add Tweet" button.
+	28.a - This should return a dialog box with a text field stating "Please enter a Tweet to add: (Example: 0,123,testuser,testcontent)
+29. Type "0,999,testuser,testcontent" into the textfield.
+30. Press "Ok" button.
+	30.a - This should return an information dialog box stating "Tweet has been added." to note success.
+31. Press "Add Tweet" button.
+32. Type "0,999,testuser,testcontent" into the textfield.
+33. Press "Ok" button.
+	33.a - This should return an error dialog box stating "Tweet already exists with same Tweet ID." to note an error.
+34. Enter "testuser" into the "Username: " textfield.
+35. Press "Get Tweet(s)" button to find the new Tweet.
+	35.a - This should return an information dialog box stating "The Tweets have been filtered." to note success.
+	35.b - This should display the Tweet with the author "testuser" in the Tweets text panel and successfully update the combo box.
+36. Press "Reset Fields & Refresh" button.
+	36.a - This should return an information dialog box stating "Entry fields have been reset and the Tweets list has been refreshed." to note success.
+********************************************************************************************************
+
+********************************** FILE > SAVE AS FUNCTIONALITY ****************************************
+37. Press "File" menu button.
+	37.a - This should expand to show "Save As..."
+38. Press "Save As..." menu button.
+	38.a - This should return an input dialog box stating "Enter the name of the file to save ("example.txt"): "
+39. Press "Cancel"
+	39.a - This should return an information dialog box stating ""Save As" was cancelled."
+40. Press "Ok" button.
+41. Press "File" menu button.
+	40.a - This should expand to show "Save As..."
+42. Press "Save As..." menu button.
+	41.a - This should return an input dialog box stating "Enter the name of the file to save ("example.txt"): "
+43. Enter "example.txt" into the textfield.
+44. Press "Ok" button.
+	44.a - This should return an information dialog box stating "File has been saved as "example.txt""
+45. Check package directory for new file named "example.txt".
+********************************************************************************************************
+
+******************************* EDIT > REMOVE TWEET FUNCTIONALITY **************************************
+46. Press "Edit" menu button.
+	46.a - This should expand to show menu "Remove Tweet"
+47. Hover over "Remove Tweet" menu button.
+	47.a - This should expand to show "By ID" and "By Username"
+48. Select "By ID"
+49. Press "Cancel" 
+	49.a - This should return an information dialog box stating "Remove was cancelled."
+50. Press "Ok"
+51. Make your way back to "Remove Tweet" and selected "By ID" again.
+52. Press "Ok"
+	52.a - This should return an error dialog box stating "No value was entered."
+53. Press "Ok"
+54. Make your way back to "Remove Tweet" and selected "By ID" again.
+55. Enter "999" into the text field.
+56. Press "Ok"
+	56.a This should return an information dialog box stating "Tweet has been removed."
+57. Press "Ok"
+
+NOTE: Repeat these steps for "By Username" and use "Seth93" as the username to delete once other functions have been confirmed.
+********************************************************************************************************

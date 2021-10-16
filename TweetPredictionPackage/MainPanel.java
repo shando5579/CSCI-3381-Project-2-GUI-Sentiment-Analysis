@@ -29,6 +29,8 @@ import javax.swing.JOptionPane;
 
 public class MainPanel extends JFrame {
 
+	
+	private static final long serialVersionUID = -4442108687821585184L;		//i hope this doesnt break the program!
 	private JPanel contentPane;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField usernameTextField;
@@ -211,19 +213,20 @@ public class MainPanel extends JFrame {
 		panel.add(labelSelectedTweets);
 		
 		//Deletes selected tweet from the combobox
-		JButton deleteTweetButton = new JButton("Delete Tweet");
-		deleteTweetButton.setForeground(Color.RED);
-		deleteTweetButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		deleteTweetButton.setBounds(217, 112, 419, 23);
-		panel.add(deleteTweetButton);
+		JButton removeTweetButton = new JButton("Remove Tweet");
+		removeTweetButton.setForeground(Color.RED);
+		removeTweetButton.setFont(new Font("Tahoma", Font.BOLD, 11));
+		removeTweetButton.setBounds(217, 112, 419, 23);
+		panel.add(removeTweetButton);
 		
-		deleteTweetButton.addActionListener((e) -> {
+		removeTweetButton.addActionListener((e) -> {
 			if (dropDownTweets.getItemCount()!=0)
 			{
 				for (Tweet tweet : tweets.getAllTweets()) {
 					if (dropDownTweets.getSelectedItem().equals(tweet)) {
 						dropDownTweets.removeItem(tweet);
 						tweets.removeTweet(tweet);
+						JOptionPane.showMessageDialog(contentPane,  "Tweet has been removed." , "Tweet Removed", JOptionPane.INFORMATION_MESSAGE);
 						break;
 					}
 				}
@@ -240,17 +243,39 @@ public class MainPanel extends JFrame {
 		
 		addTweetButton.addActionListener((e) -> {
 			String tweetInfo = "";
-			tweetInfo = JOptionPane.showInputDialog(contentPane, "Please enter a Tweet to Add: (Example: \"0,123,testuser,testcontent\")", "Add Tweet", 1);
+			//tries to take a new entry for id
 			try {
-				Tweet tweetToAdd = new Tweet(tweetInfo);
-				tweets.addTweet(tweetToAdd);
-				JOptionPane.showMessageDialog(contentPane,  "Tweet has been added." , "Tweet Added", JOptionPane.INFORMATION_MESSAGE);
+				tweetInfo = JOptionPane.showInputDialog(contentPane, "Please enter a Tweet to add: (Example: 0,123,testuser,testcontent)", "Add Tweet", 1);
+				if (tweetInfo.equals(""))
+					JOptionPane.showMessageDialog(contentPane,  "No entry was entered." , "No Entry Entered", JOptionPane.ERROR_MESSAGE);
+				else {
+					try {
+						Tweet tweetToAdd = new Tweet(tweetInfo);
+						for (Tweet tweet : tweets.getAllTweets())
+						{
+							if (tweet.getTweetId().equals(tweetToAdd.getTweetId())) 
+								JOptionPane.showMessageDialog(contentPane,  "Tweet already exists with same Tweet ID." , "Same Tweet ID", JOptionPane.ERROR_MESSAGE);
+							else
+							{
+								tweets.addTweet(tweetToAdd);
+								JOptionPane.showMessageDialog(contentPane,  "Tweet has been added." , "Tweet Added", JOptionPane.INFORMATION_MESSAGE);
+								break;
+							}
+						}
+					} catch (Exception exception)
+					{
+						JOptionPane.showMessageDialog(contentPane,  "No valid entry was entered." , "No Valid Entry Entered", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+				//exception caught is the cancel button is pressed
 			} catch (Exception exception) {
-				JOptionPane.showMessageDialog(contentPane, "Could not enter Tweet.", "Tweet Not Entered", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(contentPane,  "Add Tweet was cancelled." , "Add Tweet Cancelled", JOptionPane.INFORMATION_MESSAGE);
 			}
+		
 		});
 		
-		//Refreshes the tweets textfield to show all tweets with the given id and/or username
+		//Makes the tweets textfield show all tweets with the given id and/or username
 		JButton getTweetsButton = new JButton("Get Tweet(s)");
 		getTweetsButton.setBounds(217, 47, 175, 23);
 		panel.add(getTweetsButton);
@@ -273,13 +298,16 @@ public class MainPanel extends JFrame {
 					listOfTweets.setText(textToReturn);
 					found = true;
 				} else if (usernameTextField.getText().equals("") && idTextField.getText().equals("")) {
-					JOptionPane.showMessageDialog(contentPane, "No entries exist in the fields.", "No Field Entries Exist", JOptionPane.ERROR_MESSAGE);
-					break;
+					listOfTweets.setText("");
+					dropDownTweets.removeAllItems();
 				}
 			}
 			
-			if (!(usernameTextField.getText().equals("") && idTextField.getText().equals("")) && (found == false)) {
+			if (found == true)
+				JOptionPane.showMessageDialog(contentPane,  "Tweets have been filtered." , "Tweets Filtered", JOptionPane.INFORMATION_MESSAGE);
+			else if (found == false) {
 				JOptionPane.showMessageDialog(contentPane, "No such entries exist.", "No Such Entries Exist", JOptionPane.ERROR_MESSAGE);
+				
 			}
 		});
 		
@@ -317,17 +345,17 @@ public class MainPanel extends JFrame {
 		fileSaveAs.addActionListener((e) -> {
 			String newFileName = "";
 			try {
-				newFileName = JOptionPane.showInputDialog(contentPane, "Enter the Name of the File to Save (\"example.txt\"): ", "Save As", 1);
+				newFileName = JOptionPane.showInputDialog(contentPane, "Enter the name of the file to save (\"example.txt\"): ", "Save As", 1);
 				if (!newFileName.equals("")) {
 					try {
 						tweets.writeFile("./TweetPredictionPackage/" + newFileName);
-						JOptionPane.showMessageDialog(contentPane,  "File has been saved as \"" + newFileName + "\"" , "Tweet Removed", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(contentPane,  "File has been saved as \"" + newFileName + "\"" , "File Saved", JOptionPane.INFORMATION_MESSAGE);
 					} catch (Exception exception) {
 						JOptionPane.showMessageDialog(contentPane, "Invalid file name was entered.", "Invalid File Name", JOptionPane.ERROR_MESSAGE);
 					}
 				} 
 			} catch (Exception exception) {
-				JOptionPane.showMessageDialog(contentPane, "Save As was cancalled.", "Save As Cancelled", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(contentPane, "\"Save As\" was cancelled.", "Save As Cancelled", JOptionPane.INFORMATION_MESSAGE);
 			}
 
 		});
@@ -405,93 +433,6 @@ public class MainPanel extends JFrame {
 			else if (error_code == 2)
 				JOptionPane.showMessageDialog(contentPane, "No such entry exists.", "No Such Entry", JOptionPane.ERROR_MESSAGE);
 		});
-		
-		//adds view menu to menu bar
-		JMenu viewMenu = new JMenu("View");
-		tweetMenuBar.add(viewMenu);
-		
-		//adds filter menu to view menu
-		JMenu viewFilter = new JMenu("Filter");
-		viewMenu.add(viewFilter);
-		
-		//adds menu item to filter menu
-		JMenuItem filterUsername = new JMenuItem("By Username");
-		viewFilter.add(filterUsername);
-		
-		//filters the current tweets to only show what username was entered
-		filterUsername.addActionListener((e) -> {
-			int error_code = -1;
-			String textToReturn = "";
-			//tries to find tweet with entered username
-			try {
-				enteredUser = JOptionPane.showInputDialog(contentPane, "Please enter a Username: ", "Filter Tweet By Username", 1);
-				for (Tweet tweet : tweets.getAllTweets()) {
-					if (tweet.getTweetUserName().equals(enteredUser)) {
-						dropDownTweets.removeAllItems();
-						dropDownTweets.addItem(tweet);
-						textToReturn += tweet;
-						error_code = 0;
-						break;
-					} else if (enteredUser.equals(""))
-						error_code = 1;
-					else
-						error_code = 2;
-				}
-				//exception caught if cancelled
-			} catch (Exception exception) {
-				JOptionPane.showMessageDialog(contentPane,  "Filter was cancelled." , "Filter Cancelled", JOptionPane.INFORMATION_MESSAGE);
-			}
-			
-			if (error_code == 0) {
-				listOfTweets.setText(textToReturn);
-				JOptionPane.showMessageDialog(contentPane,  "Tweets has been filtered." , "Tweets Filtered", JOptionPane.INFORMATION_MESSAGE);
-			}
-			else if (error_code == 1)
-				JOptionPane.showMessageDialog(contentPane, "No entry was entered.", "No Entry Entered", JOptionPane.ERROR_MESSAGE);
-			else if (error_code == 2)
-				JOptionPane.showMessageDialog(contentPane, "No such entry exists.", "No Such Entry", JOptionPane.ERROR_MESSAGE);
-			
-		});
-		
-		//menu item for filter menu
-		JMenuItem filterID = new JMenuItem("By ID");
-		viewFilter.add(filterID);
-		
-		//filters the current tweets to only show what id was entered
-		filterID.addActionListener((e) -> {
-			int error_code = -1;
-			String textToReturn = "";
-			//tries to find tweet with entered id
-			try {
-				enteredId = JOptionPane.showInputDialog(contentPane, "Please enter a Tweet ID: ", "Filter Tweets By ID", 1);
-				for (Tweet tweet : tweets.getAllTweets()) {
-					if (tweet.getTweetId().equals(enteredId)) {
-						dropDownTweets.removeAllItems();
-						dropDownTweets.addItem(tweet);
-						textToReturn += tweet;
-						error_code = 0;
-						break;
-					} else if (enteredId.equals(""))
-						error_code = 1;
-					else
-						error_code = 2;
-				}
-				//exception caught if cancelled
-			} catch (Exception exception) {
-				JOptionPane.showMessageDialog(contentPane,  "Filter was cancelled." , "Filter Cancelled", JOptionPane.INFORMATION_MESSAGE);
 
-			}
-			
-			if (error_code == 0) {
-				listOfTweets.setText(textToReturn);
-				JOptionPane.showMessageDialog(contentPane,  "Tweets has been filtered." , "Tweets Filtered", JOptionPane.INFORMATION_MESSAGE);
-			}
-			else if (error_code == 1)
-				JOptionPane.showMessageDialog(contentPane, "No value was entered.", "No Value Entered", JOptionPane.ERROR_MESSAGE);
-			else if (error_code == 2)
-				JOptionPane.showMessageDialog(contentPane, "No such entry exists.", "No Such Entry", JOptionPane.ERROR_MESSAGE);
-			
-		});
-		//*************************** END OF MENU BAR ***************************
 	}
 }
